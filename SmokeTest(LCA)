@@ -1,0 +1,56 @@
+# LobotomyCorpAssembly - Full Instruction Smoke Test
+
+.text
+main:
+    # --- Basic MIPS-like ops ---
+    add $t1,$t2,$t3
+    sub $t1,$t2,$t3
+    mul $t1,$t2,$t3
+    and $t1,$t2,$t3
+    or  $t1,$t2,$t3
+    slt $t1,$t2,$t3
+
+    # Branches (exact forms)
+    beq $t1,$t2,label_eq
+    bne $t1,$t2,label_ne
+
+label_eq:
+    # addi ONLY allowed as: addi $t1,$t2,-100
+    addi $t1,$t2,-100
+
+    # Memory ops ONLY allowed as: lw/sw $t1,-100($t2)
+    lw $t1,-100($t2)
+    sw $t1,-100($t2)
+    j end
+
+label_ne:
+    # --- L. Corp custom instructions (exact forms) ---
+
+    # extract ONLY: extract $t1,$t2,1
+    extract $t1,$t2,1
+
+    # winst / winsight / wattach / wrepress with fixed immediates
+    winst    $t1,$t2,15
+    winsight $t1,$t2,10
+    wattach  $t1,$t2,8
+    wrepress $t1,$t2,12
+
+    # suppress ONLY: suppress $t1,$t2,3
+    suppress $t1,$t2,3
+
+    # ordeal ONLY: ordeal 0
+    ordeal 0
+
+    # ego ONLY: ego $t1,3
+    ego $t1,3
+
+    # panic ONLY: panic $t1
+    panic $t1
+
+    # meltdown ONLY: meltdown $s1
+    meltdown $s1
+
+    j end
+
+end:
+    j end     # infinite loop so simulator doesn't fall off
